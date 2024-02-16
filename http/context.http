@@ -1,0 +1,32 @@
+
+###
+POST http://localhost:8080/v1/contexts
+Content-Type: application/json
+X-Correlation-ID: {{$random.uuid}}
+
+{
+  "name": "",
+  "description": "Maintenance Account"
+}
+
+> {%
+  client.global.set("contextId", response.body.data.id)
+%}
+
+###
+GET http://localhost:8080/v1/contexts/{{contextId}}
+X-Correlation-ID: {{$random.uuid}}
+
+###
+GET http://localhost:8080/v1/contexts?size=1&page=0&name=maintenance_account_
+X-Correlation-ID: {{$random.uuid}}
+
+> {%
+    var arr = new Array(response.body.data.items)
+    var s = arr.length > 0
+    client.assert(s, "Lista")
+%}
+
+###
+DELETE http://localhost:8080/v1/contexts/{{contextId}}
+X-Correlation-ID: {{$random.uuid}}

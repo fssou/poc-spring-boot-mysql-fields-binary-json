@@ -1,0 +1,43 @@
+
+###
+POST http://localhost:8080/v1/proposals
+Content-Type: application/json
+X-Correlation-ID: {{$random.uuid}}
+
+{
+  "metadata": {
+    "account_id": "{{$random.uuid}}"
+  },
+  "personId": "{{$random.uuid}}",
+  "processId": "{{$random.uuid}}",
+  "statusId": "3c94fc10-a9e9-4546-b298-68417b379a1e",
+  "intentionId": "42e195e9-d107-4c65-acb1-04fd82afd099"
+}
+> {%
+  client.global.set("proposalId", response.body.data.id)
+%}
+
+
+###
+GET http://localhost:8080/v1/proposals/{{proposalId}}
+X-Correlation-ID: {{$random.uuid}}
+
+> {%
+  client.assert(response.status == 200)
+%}
+
+###
+GET http://localhost:8080/v1/proposals?size=3&page=0&name=in_progress
+X-Correlation-ID: {{$random.uuid}}
+
+> {%
+    var arr = new Array(response.body.data.items)
+    var s = arr.length > 0
+    client.assert(s, "Lista")
+%}
+
+###
+DELETE http://localhost:8080/v1/proposals/{{proposalId}}
+X-Correlation-ID: {{$random.uuid}}
+
+###

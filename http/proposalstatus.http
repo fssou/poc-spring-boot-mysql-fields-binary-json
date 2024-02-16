@@ -1,0 +1,38 @@
+
+###
+POST http://localhost:8080/v1/proposalStatuses
+Content-Type: application/json
+X-Correlation-ID: {{$random.uuid}}
+
+{
+  "name": "in_progress",
+  "description": "In Progress"
+}
+> {%
+  client.global.set("proposalStatusesId", response.body.data.id)
+%}
+
+
+###
+GET http://localhost:8080/v1/proposalStatuses/{{proposalStatusesId}}
+X-Correlation-ID: {{$random.uuid}}
+
+> {%
+  client.assert(response.status == 200)
+%}
+
+###
+GET http://localhost:8080/v1/proposalStatuses?size=1&page=0&name=in_progress
+X-Correlation-ID: {{$random.uuid}}
+
+> {%
+    var arr = new Array(response.body.data.items)
+    var s = arr.length > 0
+    client.assert(s, "Lista")
+%}
+
+###
+DELETE http://localhost:8080/v1/proposalStatuses/{{proposalStatusesId}}
+X-Correlation-ID: {{$random.uuid}}
+
+###

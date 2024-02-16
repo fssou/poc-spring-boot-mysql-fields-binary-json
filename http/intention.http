@@ -1,0 +1,39 @@
+
+###
+POST http://localhost:8080/v1/intentions
+Content-Type: application/json
+X-Correlation-ID: {{$random.uuid}}
+
+{
+  "name": "ownership_account",
+  "description": "Ownership Account",
+  "contextId": "07bb91db-5abb-4533-ab69-d5883ab59c79"
+}
+> {%
+  client.global.set("intentionId", response.body.data.id)
+%}
+
+
+###
+GET http://localhost:8080/v1/intentions/{{intentionId}}
+X-Correlation-ID: {{$random.uuid}}
+
+> {%
+  client.assert(response.body.data.contextId, "ContextId")
+%}
+
+###
+GET http://localhost:8080/v1/intentions?size=1&page=0&name=ownership_account_
+X-Correlation-ID: {{$random.uuid}}
+
+> {%
+    var arr = new Array(response.body.data.items)
+    var s = arr.length > 0
+    client.assert(s, "Lista")
+%}
+
+###
+DELETE http://localhost:8080/v1/intentions/{{intentionId}}
+X-Correlation-ID: {{$random.uuid}}
+
+###

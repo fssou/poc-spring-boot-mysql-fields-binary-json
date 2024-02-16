@@ -1,0 +1,36 @@
+server:
+  error:
+    whitelabel:
+      enabled: false
+spring:
+  main:
+    banner-mode: off
+    web-application-type: servlet
+  application:
+    name: poc-spring-boot-mysql-fields-binary-json
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://${APP_DATABASE_HOST:localhost}:${APP_DATABASE_PORT:3306}/${APP_DATABASE_NAME:poc_spring_boot_mysql_fields_binary_json}?allowPublicKeyRetrieval=true&useSSL=false
+    username: ${APP_DATABASE_USERNAME:root}
+    password: ${APP_DATABASE_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+app:
+  hosts:
+    logstash: localhost:5044

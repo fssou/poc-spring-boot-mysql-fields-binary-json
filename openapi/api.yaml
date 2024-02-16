@@ -1,0 +1,1074 @@
+openapi: 3.0.3
+
+info:
+  title: Proof of Concept Spring Boot MySQL
+  description: Proof of Concept Spring Boot MySQL with fields binary and JSON
+  version: 1.0.0
+  contact:
+    name: Franclin
+    email: f@francl.in
+
+servers:
+  - url: http://localhost:8080
+    description: Local
+
+tags:
+  - name: Contexts V1
+    description: Contexts
+  - name: Intentions V1
+    description: Intentions
+  - name: ProposalStatuses V1
+    description: ProposalStatuses
+  - name: Proposals V1
+    description: Proposals
+
+paths:
+  /v1/contexts:
+    post:
+      summary: Create a new context
+      operationId: createContext
+      tags:
+        - Contexts V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Context'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Context'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      summary: Search contexts
+      operationId: searchContexts
+      tags:
+        - Contexts V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: query
+          name: page
+          description: Page position
+          schema:
+            type: integer
+            default: 0
+          required: false
+        - in: query
+          name: size
+          description: Size
+          schema:
+            type: integer
+            default: 10
+          required: false
+        - in: query
+          name: sortDirection
+          description: Sort direction
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+          required: false
+        - in: query
+          name: sortField
+          description: Sort field
+          schema:
+            type: string
+            default: id
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseList'
+                  - properties:
+                      data:
+                        properties:
+                          items:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Context'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+  /v1/contexts/{id}:
+    get:
+      summary: Get a context by ID
+      operationId: getContext
+      tags:
+        - Contexts V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          description: Context ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Context'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+    patch:
+      summary: Patch a context by ID
+      operationId: patchContext
+      tags:
+        - Contexts V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          description: Context ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Context'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Context'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+    put:
+      summary: Update a context by ID
+      operationId: updateContext
+      tags:
+        - Contexts V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          description: Context ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Context'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Context'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /v1/intentions:
+    post:
+      summary: Create a new intention
+      operationId: createIntention
+      tags:
+        - Intentions V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Intention'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Intention'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      summary: Search intentions
+      operationId: searchIntentions
+      tags:
+        - Intentions V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: query
+          name: page
+          description: Page position
+          schema:
+            type: integer
+            default: 0
+          required: false
+        - in: query
+          name: size
+          description: Size
+          schema:
+            type: integer
+            default: 10
+          required: false
+        - in: query
+          name: sortDirection
+          description: Sort direction
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+          required: false
+        - in: query
+          name: sortField
+          description: Sort field
+          schema:
+            type: string
+            default: id
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseList'
+                  - properties:
+                      data:
+                        properties:
+                          items:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Intention'
+  /v1/intentions/{id}:
+    get:
+      summary: Get an intention by ID
+      operationId: getIntention
+      tags:
+        - Intentions V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          description: Intention ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Intention'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+    patch:
+      summary: Patch an intention by ID
+      operationId: patchIntention
+      tags:
+        - Intentions V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          description: Intention ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Intention'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Intention'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+    put:
+      summary: Update an intention by ID
+      operationId: updateIntention
+      tags:
+        - Intentions V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          description: Intention ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Intention'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Intention'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /v1/proposalStatuses:
+    post:
+      summary: Create a new proposal status
+      operationId: createProposalStatus
+      tags:
+        - ProposalStatuses V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProposalStatus'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/ProposalStatus'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      summary: Search proposal statuses
+      operationId: searchProposalStatuses
+      tags:
+        - ProposalStatuses V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: query
+          name: page
+          description: Page position
+          schema:
+            type: integer
+            default: 0
+          required: false
+        - in: query
+          name: size
+          description: Size
+          schema:
+            type: integer
+            default: 10
+          required: false
+        - in: query
+          name: sortDirection
+          description: Sort direction
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+          required: false
+        - in: query
+          name: sortField
+          description: Sort field
+          schema:
+            type: string
+            default: id
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseList'
+                  - properties:
+                      data:
+                        properties:
+                          items:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/ProposalStatus'
+  /v1/proposalStatuses/{id}:
+    get:
+      summary: Get a proposal status by ID
+      operationId: getProposalStatus
+      tags:
+        - ProposalStatuses V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          description: Proposal status ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/ProposalStatus'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+    patch:
+      summary: Patch a proposal status by ID
+      operationId: patchProposalStatus
+      tags:
+        - ProposalStatuses V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          description: Proposal status ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProposalStatus'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/ProposalStatus'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /v1/proposals:
+    post:
+      summary: Create a new proposal
+      operationId: createProposal
+      tags:
+        - Proposals V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Proposal'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Proposal'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      summary: Search proposals
+      operationId: searchProposals
+      tags:
+        - Proposals V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: query
+          name: page
+          description: Page position
+          schema:
+            type: integer
+            default: 0
+          required: false
+        - in: query
+          name: size
+          description: Size
+          schema:
+            type: integer
+            default: 10
+          required: false
+        - in: query
+          name: sortDirection
+          description: Sort direction
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+          required: false
+        - in: query
+          name: sortField
+          description: Sort field
+          schema:
+            type: string
+            default: id
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseList'
+                  - properties:
+                      data:
+                        properties:
+                          items:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Proposal'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+  /v1/proposals/{id}:
+    get:
+      summary: Get a proposal by ID
+      operationId: getProposal
+      tags:
+        - Proposals V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          description: Proposal ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Proposal'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+    patch:
+      summary: Patch a proposal by ID
+      operationId: patchProposal
+      tags:
+        - Proposals V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          description: Proposal ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Proposal'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Proposal'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+    put:
+      summary: Update a proposal by ID
+      operationId: updateProposal
+      tags:
+        - Proposals V1
+      parameters:
+        - in: header
+          name: X-Correlation-ID
+          description: Correlation ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: id
+          description: Proposal ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Proposal'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - properties:
+                      data:
+                        $ref: '#/components/schemas/Proposal'
+        400:
+          $ref: '#/components/responses/400'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+
+components:
+  schemas:
+    ResponseDataListPage:
+      type: object
+      properties:
+        total:
+          type: integer
+        offset:
+          type: integer
+        size:
+          type: integer
+    ResponseDataList:
+      type: object
+      properties:
+        total:
+          type: integer
+        page:
+          $ref: '#/components/schemas/ResponseDataListPage'
+        items:
+          type: array
+          items:
+            type: object
+    ResponsePartialError:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+    ResponsePartialData:
+      type: object
+      properties:
+        data:
+          type: object
+    ResponseBase:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: string
+    Response:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBase'
+        - $ref: '#/components/schemas/ResponsePartialData'
+    ResponseError:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBase'
+        - $ref: '#/components/schemas/ResponsePartialError'
+    ResponseList:
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - properties:
+            data:
+              $ref: '#/components/schemas/ResponseDataList'
+    Context:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+    Intention:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        contextId:
+          type: string
+          format: uuid
+    ProposalStatus:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+    Proposal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        metadata:
+          type: string
+          format: json
+        personId:
+          type: string
+          format: uuid
+          required: true
+        processId:
+          type: string
+          format: uuid
+          required: true
+        intentionId:
+          type: string
+          format: uuid
+          required: true
+        statusId:
+          type: string
+          format: uuid
+          required: true
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        deletedAt:
+          type: string
+          format: date-time
+          readOnly: true
+  responses:
+    400:
+      description: Bad Request
+    401:
+      description: Unauthorized
+    403:
+      description: Forbidden
+    404:
+      description: Not Found
+    500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResponseError'

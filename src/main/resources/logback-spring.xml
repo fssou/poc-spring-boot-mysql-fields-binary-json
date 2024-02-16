@@ -1,0 +1,26 @@
+<configuration>
+    <springProperty scope="local" name="logstashHost" source="app.hosts.logstash" defaultValue="localhost"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <appender name="LogstashTcpSocketAppender" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${logstashHost}</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                <maxDepthPerThrowable>30</maxDepthPerThrowable>
+                <maxLengthOfCallerData>100</maxLengthOfCallerData>
+                <rootCauseFirst>true</rootCauseFirst>
+            </throwableConverter>
+        </encoder>
+    </appender>
+    <appender name="LogstashAsyncAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LogstashTcpSocketAppender"/>
+        <queueSize>1</queueSize>
+        <neverBlock>true</neverBlock>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="LogstashAsyncAppender"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    <logger name="org.springframework.transaction" level="debug"/>
+    <logger name="org.springframework.orm.jpa" level="debug"/>
+</configuration>

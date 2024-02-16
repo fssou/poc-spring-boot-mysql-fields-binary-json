@@ -1,0 +1,1 @@
+package in.francl.poc.pocspringbootmysqlfieldsbinaryjson;
