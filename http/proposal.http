@@ -6,7 +6,8 @@ X-Correlation-ID: {{$random.uuid}}
 
 {
   "metadata": {
-    "account_id": "{{$random.uuid}}"
+    "account_id": "{{$random.uuid}}",
+    "offer_opt_in": true
   },
   "personId": "{{$random.uuid}}",
   "processId": "{{$random.uuid}}",
