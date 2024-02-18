@@ -15,13 +15,14 @@ public class ProposalDTAssembler implements Function<ProposalEntity, ProposalDT>
         @Override
         public ProposalDT apply(ProposalEntity proposalEntity) {
             var objectMapper = new ObjectMapper();
+            var mapType = objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
             try {
                 return ProposalDTImpl.of(
                     proposalEntity.getId(),
                     proposalEntity.getCreatedAt(),
                     proposalEntity.getUpdatedAt(),
                     proposalEntity.getDeletedAt(),
-                    objectMapper.readValue(proposalEntity.getMetadata(), objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class)),
+                    objectMapper.readValue(proposalEntity.getMetadata(), mapType),
                     proposalEntity.getPersonId(),
                     proposalEntity.getProcessId(),
                     proposalEntity.getStatus().getId(),

@@ -90,16 +90,8 @@ public class ProposalRepositoryOnRdb implements ProposalRepository {
                         .withIgnorePaths("metadata")
                         .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
                 );
-//                var entityPage = repositoryOnRdbQueryMethod.findAll(example, pageRequest);
 
                 var metadata = proposal.getMetadata();
-                /*
-                 * Structure of the metadataStr:
-                 * {
-                 *      "jsonPath": ["value_to_search", "second_value_to_search"]
-                 *      "jsonPath2": ["value_to_search", "second_value_to_search"]
-                 * }
-                 */
                 Specification<ProposalEntity> specification = (root, query, criteriaBuilder) -> {
                     var predicates = new ArrayList<Predicate>();
                     var jsonPaths  = metadata.keySet();
