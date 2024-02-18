@@ -5,7 +5,7 @@ import java.util.Collections;
 public non-sealed class SystemError extends ServiceError {
 
     public SystemError(Throwable cause) {
-        super("error.system", cause.getMessage(), cause.getCause().getMessage(), Collections.emptyList());
+        super("error.system", cause.getMessage(), cause.getCause() != null ? cause.getMessage() : cause.getLocalizedMessage(), Collections.emptyList());
     }
 
     public static SystemError of(Throwable cause) {
