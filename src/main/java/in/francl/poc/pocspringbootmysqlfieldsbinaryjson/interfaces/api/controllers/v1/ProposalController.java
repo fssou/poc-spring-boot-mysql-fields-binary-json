@@ -1,5 +1,7 @@
 package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.controllers.v1;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.errors.ServiceError;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.service.ProposalService;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.contracts.Pageable;
@@ -37,9 +39,14 @@ public class ProposalController extends BaseController {
     private final static Logger LOGGER = LoggerFactory.getLogger(ProposalController.class);
 
     private final ProposalService proposalService;
+    private final ObjectMapper objectMapper;
 
-    public ProposalController(ProposalService proposalService) {
+    public ProposalController(
+        ProposalService proposalService,
+        ObjectMapper objectMapper
+    ) {
         this.proposalService = proposalService;
+        this.objectMapper = objectMapper;
     }
 
     @PostMapping(
@@ -222,7 +229,7 @@ public class ProposalController extends BaseController {
         @RequestParam(name = "sortFields", defaultValue = "id") List<String> sortFields,
         @RequestParam(name = "sortDirection", defaultValue = "ASC") String sortDirection,
         @RequestParam Map<String, String> proposalRequestParam
-    ) {
+    ) throws JsonProcessingException {
         var timer = Timer.start();
         MDC.put("correlationId", correlationId);
         LOGGER.info(
@@ -237,6 +244,8 @@ public class ProposalController extends BaseController {
         String processId = proposalRequestParam.get("processId");
         String statusId = proposalRequestParam.get("statusId");
         String intentionId = proposalRequestParam.get("intentionId");
+        String metadataStr = proposalRequestParam.get("metadata");
+        var metadata = objectMapper.readValue(metadataStr, Map.class);
         var proposal = Proposal.of(
             id != null ? UUID.fromString(id) : null,
             Try.of( () -> LocalDateTime.parse(createdAt)).fold(
@@ -251,7 +260,7 @@ public class ProposalController extends BaseController {
                 e -> null,
                 Try::get
             ),
-            null,
+            metadata,
             personId != null ? UUID.fromString(personId) : null,
             processId != null ? UUID.fromString(processId) : null,
             statusId != null ? UUID.fromString(statusId) : null,
@@ -305,4 +314,5 @@ public class ProposalController extends BaseController {
             }
         );
     }
+
 }

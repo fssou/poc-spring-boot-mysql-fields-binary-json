@@ -27,7 +27,17 @@ X-Correlation-ID: {{$random.uuid}}
 %}
 
 ###
-GET http://localhost:8080/v1/proposals?size=3&page=0&name=in_progress
+< {%
+    let metadataSearch = {
+        "$.account_id": [
+            "d62fcd2a-c4f9-4713-b906-f1343212023c",
+            "4f7c2f8e-692f-40ed-8a9a-98b9caca5415",
+        ],
+    };
+    metadataSearch = {}
+    request.variables.set("metadataSearch", encodeURIComponent(JSON.stringify(metadataSearch)));
+%}
+GET http://localhost:8080/v1/proposals?size=3&page=0&metadata={{metadataSearch}}&statusId=3c94fc10-a9e9-4546-b298-68417b379a1e&processId=77041a11-8e64-4c16-add3-ce777ad2f14f
 X-Correlation-ID: {{$random.uuid}}
 
 > {%

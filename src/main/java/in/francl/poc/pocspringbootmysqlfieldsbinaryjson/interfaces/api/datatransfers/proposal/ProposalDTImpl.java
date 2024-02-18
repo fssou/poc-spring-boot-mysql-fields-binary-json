@@ -3,6 +3,7 @@ package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.datatran
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposal.ProposalDT;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 public class ProposalDTImpl implements ProposalDT {
@@ -11,7 +12,7 @@ public class ProposalDTImpl implements ProposalDT {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
-    private final String metadata;
+    private final Map<String, Object> metadata;
     private final UUID personId;
     private final UUID processId;
     private final UUID statusId;
@@ -22,7 +23,7 @@ public class ProposalDTImpl implements ProposalDT {
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         LocalDateTime deletedAt,
-        String metadata,
+        Map<String, Object> metadata,
         UUID personId,
         UUID processId,
         UUID statusId,
@@ -44,7 +45,7 @@ public class ProposalDTImpl implements ProposalDT {
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         LocalDateTime deletedAt,
-        String metadata,
+        Map<String, Object> metadata,
         UUID personId,
         UUID processId,
         UUID statusId,
@@ -74,7 +75,7 @@ public class ProposalDTImpl implements ProposalDT {
     }
 
     @Override
-    public String getMetadata() {
+    public Map<String, Object> getMetadata() {
         return metadata;
     }
 

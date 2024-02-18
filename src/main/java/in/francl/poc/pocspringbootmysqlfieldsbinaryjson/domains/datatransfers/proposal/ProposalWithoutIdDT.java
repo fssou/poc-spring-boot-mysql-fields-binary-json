@@ -1,6 +1,7 @@
 package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposal;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 public interface ProposalWithoutIdDT {
@@ -11,7 +12,7 @@ public interface ProposalWithoutIdDT {
 
     LocalDateTime getDeletedAt();
 
-    String getMetadata();
+    Map<String, Object> getMetadata();
 
     UUID getPersonId();
 

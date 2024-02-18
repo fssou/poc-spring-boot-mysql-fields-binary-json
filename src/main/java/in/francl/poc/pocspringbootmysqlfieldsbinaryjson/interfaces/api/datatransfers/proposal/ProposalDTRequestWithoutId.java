@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposal.ProposalWithoutIdDT;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 @JsonPropertyOrder
@@ -15,7 +16,7 @@ public class ProposalDTRequestWithoutId implements ProposalWithoutIdDT {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final LocalDateTime deletedAt;
-    private final String metadata;
+    private final Map<String, Object> metadata;
     private final UUID personId;
     private final UUID processId;
     private final UUID statusId;
@@ -25,7 +26,7 @@ public class ProposalDTRequestWithoutId implements ProposalWithoutIdDT {
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         LocalDateTime deletedAt,
-        String metadata,
+        Map<String, Object> metadata,
         UUID personId,
         UUID processId,
         UUID statusId,
@@ -43,14 +44,13 @@ public class ProposalDTRequestWithoutId implements ProposalWithoutIdDT {
 
     @JsonCreator
     public static ProposalDTRequestWithoutId of(
-        @JsonProperty(value = "metadata") JsonNode metadata,
+        @JsonProperty(value = "metadata") Map<String, Object> metadata,
         @JsonProperty(value = "personId") UUID personId,
         @JsonProperty(value = "processId") UUID processId,
         @JsonProperty(value = "statusId") UUID statusId,
         @JsonProperty(value = "intentionId") UUID intentionId
     ) {
-        var metadataStr = metadata.toString();
-        return new ProposalDTRequestWithoutId(null, null, null, metadataStr, personId, processId, statusId, intentionId);
+        return new ProposalDTRequestWithoutId(null, null, null, metadata, personId, processId, statusId, intentionId);
     }
 
 
@@ -70,7 +70,7 @@ public class ProposalDTRequestWithoutId implements ProposalWithoutIdDT {
     }
 
     @Override
-    public String getMetadata() {
+    public Map<String, Object> getMetadata() {
         return metadata;
     }
 

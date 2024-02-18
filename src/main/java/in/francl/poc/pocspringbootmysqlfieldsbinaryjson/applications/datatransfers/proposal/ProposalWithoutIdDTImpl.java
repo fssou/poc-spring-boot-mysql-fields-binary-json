@@ -3,6 +3,7 @@ package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.datatransf
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposal.ProposalWithoutIdDT;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 public class ProposalWithoutIdDTImpl implements ProposalWithoutIdDT {
@@ -13,7 +14,7 @@ public class ProposalWithoutIdDTImpl implements ProposalWithoutIdDT {
 
     private final LocalDateTime deletedAt;
 
-    private final String metadata;
+    private final Map<String, Object> metadata;
 
     private final UUID personId;
 
@@ -27,7 +28,7 @@ public class ProposalWithoutIdDTImpl implements ProposalWithoutIdDT {
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         LocalDateTime deletedAt,
-        String metadata,
+        Map<String, Object> metadata,
         UUID personId,
         UUID processId,
         UUID statusId,
@@ -47,7 +48,7 @@ public class ProposalWithoutIdDTImpl implements ProposalWithoutIdDT {
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         LocalDateTime deletedAt,
-        String metadata,
+        Map<String, Object> metadata,
         UUID personId,
         UUID processId,
         UUID statusId,
@@ -82,7 +83,7 @@ public class ProposalWithoutIdDTImpl implements ProposalWithoutIdDT {
     }
 
     @Override
-    public String getMetadata() {
+    public Map<String, Object> getMetadata() {
         return metadata;
     }
 

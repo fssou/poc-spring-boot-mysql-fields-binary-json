@@ -10,6 +10,7 @@ import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.utils.either.Eit
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 
 public class Proposal implements Entity<UUID> {
@@ -22,7 +23,7 @@ public class Proposal implements Entity<UUID> {
 
     private final LocalDateTime deletedAt;
 
-    private final String metadata;
+    private final Map<String, Object> metadata;
 
     private final UUID personId;
 
@@ -37,7 +38,7 @@ public class Proposal implements Entity<UUID> {
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         LocalDateTime deletedAt,
-        String metadata,
+        Map<String, Object> metadata,
         UUID personId,
         UUID processId,
         UUID statusId,
@@ -59,7 +60,7 @@ public class Proposal implements Entity<UUID> {
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         LocalDateTime deletedAt,
-        String metadata,
+        Map<String, Object> metadata,
         UUID personId,
         UUID processId,
         UUID statusId,
@@ -153,7 +154,7 @@ public class Proposal implements Entity<UUID> {
         return deletedAt;
     }
 
-    public String getMetadata() {
+    public Map<String, Object> getMetadata() {
         return metadata;
     }
 
