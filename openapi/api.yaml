@@ -1027,7 +1027,7 @@ components:
           format: uuid
           readOnly: true
         metadata:
-          type: string
+          type: object
           format: json
         personId:
           type: string
