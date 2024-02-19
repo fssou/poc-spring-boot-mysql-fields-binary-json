@@ -6,7 +6,6 @@ import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.pr
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.datatransfers.proposal.ProposalDTImpl;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.rdb.entities.ProposalEntity;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 

@@ -3,10 +3,7 @@ package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.datatran
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposalstatus.ProposalStatusDT;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposalstatus.ProposalStatusWithoutIdDT;
-
-import java.util.UUID;
 
 @JsonPropertyOrder
 public class ProposalStatusDTRequestWithoutId implements ProposalStatusWithoutIdDT {

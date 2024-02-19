@@ -7,7 +7,7 @@ import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.rdb.enti
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.rdb.entities.assembler.intention.IntentionEntityDTAssembler;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.rdb.repositories.querymethod.IntentionRepositoryOnRdbQueryMethod;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.utils._try.Try;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.Transformer;
+import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.transformers.Transformer;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;

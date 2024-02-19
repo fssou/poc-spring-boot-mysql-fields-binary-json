@@ -6,18 +6,15 @@ import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.errors.Serv
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.service.ProposalService;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.contracts.Pageable;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposal.ProposalDT;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposalstatus.ProposalStatusDT;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.entities.Proposal;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.entities.ProposalStatus;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.utils.either.Either;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.utils._try.Try;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.assemblers.proposal.ProposalDTAssembler;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.assemblers.proposalstatus.ProposalStatusDTAssembler;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.controllers.BaseController;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.datatransfers.proposal.ProposalDTRequestWithoutId;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.datatransfers.response.Response;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.Timer;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.Transformer;
+import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.datetime.Timer;
+import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.transformers.Transformer;
 import net.logstash.logback.marker.Markers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +98,62 @@ public class ProposalController extends BaseController {
         );
         MDC.clear();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PatchMapping(
+        path = "/{id}",
+        consumes = "application/json",
+        produces = "application/json"
+    )
+    public ResponseEntity<?> patch(
+        @RequestHeader("X-Correlation-ID") String correlationId,
+        @PathVariable("id") String id,
+        @RequestBody ProposalDTRequestWithoutId proposalDT
+    ) {
+        var timer = Timer.start();
+        MDC.put("correlationId", correlationId);
+        LOGGER.info(
+            Markers.append("proposal", proposalDT),
+            "Patching proposal"
+        );
+        Either<ServiceError, ProposalDT> proposalPatchedEither = proposalService.patchAndSave(id, proposalDT);
+        if (proposalPatchedEither.isLeft()) {
+            var left = proposalPatchedEither.getLeft();
+            var response = Response.withResponseError(
+                left.getCode(),
+                left.getMessage(),
+                left.getDetails(),
+                left.getErrors()
+            );
+            LOGGER.error(
+                Markers.appendEntries(
+                    Map.of(
+                        "duration", timer.stop().toMillis(),
+                        "proposal", proposalDT
+                    )
+                ),
+                "Error patching proposal",
+                proposalPatchedEither.getLeft()
+            );
+            return ResponseEntity.badRequest().body(response);
+        }
+        var response = Response.withResponseData(
+            "200",
+            "Proposal patched",
+            "Proposal patched",
+            proposalPatchedEither.getRight()
+        );
+        LOGGER.info(
+            Markers.appendEntries(
+                Map.of(
+                    "proposal", proposalPatchedEither.getRight(),
+                    "duration", timer.stop().toMillis()
+                )
+            ),
+            "Proposal patched"
+        );
+        MDC.clear();
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping(

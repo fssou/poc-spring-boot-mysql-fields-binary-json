@@ -9,7 +9,7 @@ import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.co
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.entities.Context;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.repositories.ContextRepository;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.utils.either.Either;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.Transformer;
+import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.transformers.Transformer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

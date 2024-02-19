@@ -1,4 +1,4 @@
-package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils;
+package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.transformers;
 
 import java.util.Collection;
 import java.util.function.Function;

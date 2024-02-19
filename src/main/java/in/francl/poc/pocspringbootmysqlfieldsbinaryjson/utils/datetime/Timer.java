@@ -1,4 +1,4 @@
-package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils;
+package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.datetime;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

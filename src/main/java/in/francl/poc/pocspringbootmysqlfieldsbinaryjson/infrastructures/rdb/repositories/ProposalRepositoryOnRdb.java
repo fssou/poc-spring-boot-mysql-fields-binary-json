@@ -1,9 +1,6 @@
 package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.rdb.repositories;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.contracts.Pageable;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposal.ProposalDT;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.repositories.ProposalRepository;
@@ -12,8 +9,7 @@ import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.rdb.enti
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.rdb.entities.assembler.proposal.ProposalEntityDTAssembler;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.rdb.repositories.querymethod.ProposalRepositoryOnRdbQueryMethod;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.utils._try.Try;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.Transformer;
-import jakarta.persistence.criteria.Expression;
+import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.transformers.Transformer;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -24,8 +20,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.query.EscapeCharacter;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class ProposalRepositoryOnRdb implements ProposalRepository {

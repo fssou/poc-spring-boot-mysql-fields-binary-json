@@ -10,8 +10,8 @@ import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.assembler
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.controllers.BaseController;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.datatransfers.proposalstatus.ProposalStatusDTRequestWithoutId;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.datatransfers.response.Response;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.Timer;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.Transformer;
+import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.datetime.Timer;
+import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.transformers.Transformer;
 import net.logstash.logback.marker.Markers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

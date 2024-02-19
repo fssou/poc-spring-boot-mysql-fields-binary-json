@@ -1,19 +1,17 @@
 package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.assemblers.proposal.ProposalDTAssembler;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.assemblers.proposalstatus.ProposalStatusDTAssembler;
+import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.assemblers.proposal.ProposalDomainDTAssembler;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.errors.NotFoundError;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.errors.ServiceError;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.contracts.Pageable;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposal.ProposalDT;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposal.ProposalWithoutIdDT;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposalstatus.ProposalStatusDT;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposalstatus.ProposalStatusWithoutIdDT;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.entities.Proposal;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.entities.ProposalStatus;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.repositories.ProposalRepository;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.utils.either.Either;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.Transformer;
+import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.transformers.Transformer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +21,14 @@ import java.util.List;
 public class ProposalService extends ServiceBase {
 
     private final ProposalRepository proposalRepository;
+    private final ObjectMapper objectMapper;
 
-    protected ProposalService(ProposalRepository proposalRepository) {
+    protected ProposalService(
+        ProposalRepository proposalRepository,
+        ObjectMapper objectMapper
+    ) {
         this.proposalRepository = proposalRepository;
+        this.objectMapper = objectMapper;
     }
 
     @Transactional
@@ -40,6 +43,30 @@ public class ProposalService extends ServiceBase {
         if (proposalCreatedTry.isFailure())
             return Either.left(asServiceError(proposalCreatedTry));
         return Either.right(proposalCreatedTry.get());
+    }
+
+    @Transactional
+    public Either<ServiceError, ProposalDT> patchAndSave(String id, ProposalWithoutIdDT proposalWithoutIdDT) {
+        var proposalTry = proposalRepository.get(asUUID(id));
+        if (proposalTry.isFailure())
+            return Either.left(asServiceError(proposalTry));
+        var proposalOptional = proposalTry.get();
+        if (proposalOptional.isEmpty())
+            return Either.left(
+                NotFoundError.of("Proposal not found", "Proposal not found for ID '%s'".formatted(id))
+            );
+        var proposal = proposalOptional.get();
+        var proposalEntity = Transformer.transform(proposal, ProposalDomainDTAssembler::new);
+        var proposalPatchedDomain = proposalEntity.patch(proposalWithoutIdDT);
+        if (proposalPatchedDomain.isLeft()) {
+            return Either.left(asServiceError(proposalPatchedDomain.getLeft()));
+        }
+        var proposalPatched = proposalPatchedDomain.getRight();
+        var proposalPatchedDT = Transformer.transform(proposalPatched, ProposalDTAssembler::new);
+        var proposalPatchedTry = proposalRepository.save(proposalPatchedDT);
+        if (proposalPatchedTry.isFailure())
+            return Either.left(asServiceError(proposalPatchedTry));
+        return Either.right(proposalPatchedTry.get());
     }
 
     @Transactional

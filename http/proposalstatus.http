@@ -5,8 +5,8 @@ Content-Type: application/json
 X-Correlation-ID: {{$random.uuid}}
 
 {
-  "name": "in_progress",
-  "description": "In Progress"
+  "name": "finished",
+  "description": "Proposal finished"
 }
 > {%
   client.global.set("proposalStatusesId", response.body.data.id)

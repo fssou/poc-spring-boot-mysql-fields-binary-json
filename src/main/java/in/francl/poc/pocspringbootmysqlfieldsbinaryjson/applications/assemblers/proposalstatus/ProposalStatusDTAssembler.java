@@ -3,7 +3,6 @@ package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.assemblers
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposalstatus.ProposalStatusDT;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.entities.ProposalStatus;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.datatransfers.proposalstatus.ProposalStatusDTImpl;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.rdb.entities.ProposalStatusEntity;
 
 import java.util.function.Function;
 

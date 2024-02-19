@@ -7,6 +7,7 @@ import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.errors.proposal.
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.events.DomainResult;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.events.proposal.ProposalCreated;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.utils.either.Either;
+import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.json.JsonMerge;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -108,6 +109,28 @@ public class Proposal implements Entity<UUID> {
                 DomainResult.of(proposalValid, ProposalCreated.of(proposalValid.getId(), proposalValid.getIntentionId()))
             )
         );
+    }
+
+    public Either<ProposalInvalid, Proposal> patch(ProposalWithoutIdDT proposalWithoutIdDT) {
+
+        var jsonMerge = JsonMerge.of();
+        var updatedAt = LocalDateTime.now();
+        var metadata = proposalWithoutIdDT.getMetadata() != null ? jsonMerge.merge(this.metadata, proposalWithoutIdDT.getMetadata()) : this.metadata;
+        var statusId = proposalWithoutIdDT.getStatusId() != null && !proposalWithoutIdDT.getStatusId().equals(this.statusId) ? proposalWithoutIdDT.getStatusId() : this.statusId;
+
+        var proposal = Proposal.of(
+            id,
+            createdAt,
+            updatedAt,
+            deletedAt,
+            metadata,
+            personId,
+            processId,
+            statusId,
+            intentionId
+        );
+
+        return proposal.isValid();
     }
 
     public Either<ProposalInvalid, Proposal> isValid() {

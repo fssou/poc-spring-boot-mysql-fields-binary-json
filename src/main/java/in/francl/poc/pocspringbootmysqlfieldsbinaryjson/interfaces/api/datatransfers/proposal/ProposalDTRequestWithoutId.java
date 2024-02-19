@@ -3,7 +3,6 @@ package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.interfaces.api.datatran
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.JsonNode;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.datatransfers.proposal.ProposalWithoutIdDT;
 
 import java.time.LocalDateTime;

@@ -18,6 +18,16 @@ X-Correlation-ID: {{$random.uuid}}
   client.global.set("proposalId", response.body.data.id)
 %}
 
+###
+PATCH http://localhost:8080/v1/proposals/3d9689b7-c445-4cb1-98ff-dd7419e7d2f9
+Content-Type: application/json
+X-Correlation-ID: {{$random.uuid}}
+
+{
+  "metadata": {
+  },
+  "statusId": "{{$random.uuid}}"
+}
 
 ###
 GET http://localhost:8080/v1/proposals/{{proposalId}}

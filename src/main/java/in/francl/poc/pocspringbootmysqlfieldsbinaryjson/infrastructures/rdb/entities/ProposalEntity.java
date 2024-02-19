@@ -1,17 +1,8 @@
 package in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.rdb.entities;
 
-import com.google.gson.JsonObject;
 import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.annotations.MapKeyJdbcType;
-import org.hibernate.annotations.Type;
-import org.hibernate.type.descriptor.jdbc.JsonJdbcType;
-import org.hibernate.usertype.UserType;
 
-import java.sql.JDBCType;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Entity

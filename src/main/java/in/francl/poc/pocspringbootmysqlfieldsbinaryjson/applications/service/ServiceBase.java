@@ -5,7 +5,7 @@ import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.errors.asse
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.applications.errors.assemblers.SystemErrorAssembler;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.domains.errors.DomainError;
 import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.infrastructures.utils._try.Try;
-import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.Transformer;
+import in.francl.poc.pocspringbootmysqlfieldsbinaryjson.utils.transformers.Transformer;
 
 import java.util.Optional;
 import java.util.UUID;
