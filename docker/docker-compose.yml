@@ -6,7 +6,10 @@ services:
     restart: always
     container_name: mysql
     ports:
-      - "3306:3306"
+      - target: 3306
+        published: 3306
+        protocol: tcp
+        mode: host
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
@@ -14,17 +17,23 @@ services:
     deploy:
       resources:
         limits:
-          cpus: 0.5
+          cpus: "0.5"
           memory: 512M
         reservations:
-          cpus: 0.25
+          cpus: "0.25"
           memory: 256M
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
     container_name: elasticsearch
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - target: 9200
+        published: 9200
+        protocol: tcp
+        mode: host
+      - target: 9300
+        published: 9300
+        protocol: tcp
+        mode: host
     volumes:
       - elastic:/usr/share/elasticsearch
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
@@ -33,25 +42,28 @@ services:
     deploy:
       resources:
         limits:
-          cpus: 0.5
+          cpus: "0.5"
           memory: 512M
         reservations:
-          cpus: 0.25
+          cpus: "0.25"
           memory: 256M
   kibana:
     image: docker.elastic.co/kibana/kibana:8.12.0
     container_name: kibana
     ports:
-      - "5601:5601"
+      - target: 5601
+        published: 5601
+        protocol: tcp
+        mode: host
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     deploy:
       resources:
         limits:
-          cpus: 0.5
-          memory: 512M
+          cpus: "0.5"
+          memory: 786M
         reservations:
-          cpus: 0.25
+          cpus: "0.25"
           memory: 256M
   logstash:
     image: docker.elastic.co/logstash/logstash:8.12.0
@@ -60,17 +72,23 @@ services:
       - logstash:/usr/share/logstash
       - ./logstash/pipeline:/usr/share/logstash/pipeline
     ports:
-      - "5044:5044"
-      - "9600:9600"
+      - target: 5044
+        published: 5044
+        protocol: tcp
+        mode: host
+      - target: 9600
+        published: 9600
+        protocol: tcp
+        mode: host
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     deploy:
       resources:
         limits:
-          cpus: 0.5
+          cpus: "0.5"
           memory: 512M
         reservations:
-          cpus: 0.25
+          cpus: "0.25"
           memory: 256M
 
 volumes:
