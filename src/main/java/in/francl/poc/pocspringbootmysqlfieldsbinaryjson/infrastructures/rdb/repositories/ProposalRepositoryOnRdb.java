@@ -92,7 +92,7 @@ public class ProposalRepositoryOnRdb implements ProposalRepository {
                 var metadata = proposal.getMetadata();
                 Specification<ProposalEntity> specification = (root, query, criteriaBuilder) -> {
                     var predicates = new ArrayList<Predicate>();
-                    var jsonPaths  = metadata.keySet();
+
                     for(var entry : metadata.entrySet()) {
                         var jsonPath = entry.getKey();
                         var valuesObj = entry.getValue();
@@ -118,7 +118,10 @@ public class ProposalRepositoryOnRdb implements ProposalRepository {
                 var entityPage = repositoryOnRdbQueryMethod.findAll(specification, pageRequest);
 
                 return Page.of(
-                    entityPage.getContent().stream().map(_entity -> Transformer.transform(_entity, ProposalDTAssembler::new)).toList(),
+                    entityPage.getContent()
+                        .stream()
+                        .map(x -> Transformer.transform(x, ProposalDTAssembler::new))
+                        .toList(),
                     entityPage.getTotalElements(),
                     entityPage.getNumber(),
                     entityPage.getTotalPages(),
